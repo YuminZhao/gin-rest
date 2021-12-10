@@ -1,0 +1,15 @@
+server:
+  port: 8080
+  mode: release
+  log_file: ./log
+  zone: 8
+
+mysql:
+  - name: default
+    conn:
+      user: root
+      pass: 123456
+  - name: account
+    conn:
+      user: root
+      pass: 123
