@@ -2,9 +2,9 @@ package rest
 
 import (
 	"gin-rest/config"
+	"gin-rest/route"
 	"io"
 	"log"
-	"net/http"
 	"os"
 	"strconv"
 	"time"
@@ -12,7 +12,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Start() {
+func init() {
+	cstZone := time.FixedZone("CST", config.Server.Zone*3600)
+	time.Local = cstZone
 
 	gin.SetMode(config.Server.Mode)
 
@@ -21,19 +23,18 @@ func Start() {
 		log.Fatalln(err.Error())
 	}
 	gin.DefaultWriter = io.MultiWriter(logFile)
+}
 
-	var cstZone = time.FixedZone("CST", config.Server.Zone*3600)
-	time.Local = cstZone
-
+func Start() {
 	App := gin.Default()
 	App.SetTrustedProxies(nil)
-	App.GET("/", func(c *gin.Context) {
-		log.Println(time.Now().Format("2006-01-02 15:04:05"))
-		c.JSON(http.StatusOK, gin.H{
-			"message": "hh",
-			"data":    gin.H{"1": 212},
-		})
-	})
-	log.Println("提供服务和监听于端口:" + strconv.Itoa(config.Server.Port))
-	App.Run(":" + strconv.Itoa(config.Server.Port))
+
+	route.ApiRoute(App)
+
+	err := App.Run(":" + strconv.Itoa(config.Server.Port))
+	//s := endless.NewServer(":"+strconv.Itoa(config.Server.Port), App)
+	//err := s.ListenAndServe()
+	if err != nil {
+		log.Fatalln("ERROR:", err.Error())
+	}
 }

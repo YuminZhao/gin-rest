@@ -10,7 +10,7 @@ import (
 
 type ConfigType struct {
 	Server ServerType `ymal:"server"`
-	Mysql  []ConnType `yaml:"mysql"`
+	Mysql  MysqlType  `yaml:"mysql"`
 }
 type ServerType struct {
 	Port    int    `yaml:"port"`
@@ -18,17 +18,19 @@ type ServerType struct {
 	LogFile string `yaml:"log_file"`
 	Zone    int    `yaml:"zone"`
 }
-type ConnType struct {
-	Name string    `yaml:"name"`
-	Conn MysqlType `yaml:"conn"`
-}
 type MysqlType struct {
-	User string `yaml:"user"`
-	Pass string `yaml:"pass"`
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	User     string `yaml:"user"`
+	Pass     string `yaml:"pass"`
+	Database string `yaml:"database"`
+	Charset  string `yaml:"charset"`
 }
 
-var Server *ServerType
-var Mysql map[string]MysqlType
+var (
+	Server *ServerType
+	Mysql  *MysqlType
+)
 
 func init() {
 	yamlFile, err := ioutil.ReadFile(param.Cpath)
@@ -42,12 +44,6 @@ func init() {
 		log.Fatalln(err.Error())
 	}
 
-	log.Println("配置文件" + param.Cpath + "加载成功")
-
 	Server = &config.Server
-	mysql := make(map[string]MysqlType)
-	for _, v := range config.Mysql {
-		mysql[v.Name] = v.Conn
-	}
-	Mysql = mysql
+	Mysql = &config.Mysql
 }

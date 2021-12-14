@@ -4,13 +4,11 @@ import (
 	"gin-rest/rest/yaml"
 )
 
-var Mysql = map[string]yaml.MysqlType{
-	"default": {
-		User: yaml.Mysql["default"].User,
-		Pass: yaml.Mysql["default"].Pass,
-	},
-	"account": {
-		User: yaml.Mysql["account"].User,
-		Pass: yaml.Mysql["account"].Pass,
-	},
+var Mysql = yaml.MysqlType{
+	Host:     yaml.Mysql.Host,
+	Port:     yaml.Mysql.Port,
+	User:     yaml.Mysql.User,
+	Pass:     yaml.Mysql.Pass,
+	Database: yaml.Mysql.Database,
+	Charset:  yaml.Mysql.Charset,
 }
