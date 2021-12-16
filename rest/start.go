@@ -2,6 +2,7 @@ package rest
 
 import (
 	"gin-rest/config"
+	"gin-rest/rest/r"
 	"gin-rest/route"
 	"io"
 	"log"
@@ -28,6 +29,9 @@ func init() {
 func Start() {
 	App := gin.Default()
 	App.SetTrustedProxies(nil)
+	App.NoRoute(func(c *gin.Context) {
+		r.NotFound(c)
+	})
 
 	route.ApiRoute(App)
 

@@ -8,5 +8,5 @@ import (
 
 func ApiRoute(router *gin.Engine) {
 
-	router.GET("/", controllers.IndexController.Index)
+	router.POST("/", controllers.IndexController.Index)
 }

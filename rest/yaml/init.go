@@ -13,10 +13,11 @@ type ConfigType struct {
 	Mysql  MysqlType  `yaml:"mysql"`
 }
 type ServerType struct {
-	Port    int    `yaml:"port"`
-	Mode    string `yaml:"mode"`
-	LogFile string `yaml:"log_file"`
-	Zone    int    `yaml:"zone"`
+	Port     int    `yaml:"port"`
+	Mode     string `yaml:"mode"`
+	LogFile  string `yaml:"log_file"`
+	Zone     int    `yaml:"zone"`
+	Language string `yaml:"language"`
 }
 type MysqlType struct {
 	Host     string `yaml:"host"`
