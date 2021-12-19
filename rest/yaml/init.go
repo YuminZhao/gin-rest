@@ -4,6 +4,7 @@ import (
 	"gin-rest/rest/param"
 	"io/ioutil"
 	"log"
+	"time"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -20,12 +21,15 @@ type ServerType struct {
 	Language string `yaml:"language"`
 }
 type MysqlType struct {
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
-	User     string `yaml:"user"`
-	Pass     string `yaml:"pass"`
-	Database string `yaml:"database"`
-	Charset  string `yaml:"charset"`
+	Host            string        `yaml:"host"`
+	Port            int           `yaml:"port"`
+	User            string        `yaml:"user"`
+	Pass            string        `yaml:"pass"`
+	Database        string        `yaml:"database"`
+	Charset         string        `yaml:"charset"`
+	MaxIdleConns    int           `yaml:"max_idle_conns"`
+	MaxOpenConns    int           `yaml:"max_open_conns"`
+	ConnMaxLifetime time.Duration `yaml:"conn_max_lifetime"`
 }
 
 var (

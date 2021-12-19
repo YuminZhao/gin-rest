@@ -2,6 +2,7 @@ package rest
 
 import (
 	"gin-rest/config"
+	"gin-rest/rest/m"
 	"gin-rest/rest/r"
 	"gin-rest/route"
 	"io/ioutil"
@@ -27,12 +28,12 @@ func init() {
 }
 
 func Start() {
+	defer m.SqlDB.Close()
 	App := gin.Default()
 	App.SetTrustedProxies(nil)
 	App.NoRoute(func(c *gin.Context) {
 		r.NotFound(c)
 	})
-
 	route.ApiRoute(App)
 
 	err := App.Run(":" + strconv.Itoa(config.Server.Port))

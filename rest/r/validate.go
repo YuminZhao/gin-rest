@@ -4,7 +4,6 @@ import (
 	"errors"
 	"gin-rest/config"
 	"gin-rest/controllers/validate"
-	"log"
 	"reflect"
 	"strings"
 
@@ -48,7 +47,6 @@ func init() {
 func Validate(c *gin.Context, params interface{}) errorType {
 	c.ShouldBind(params)
 	err := val.Struct(params)
-	log.Println(err)
 	var sliceErr, tran string
 	errData := make(map[string]string)
 	if err != nil {
