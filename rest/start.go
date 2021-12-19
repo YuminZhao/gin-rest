@@ -9,20 +9,16 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
-	cstZone := time.FixedZone("CST", config.Server.Zone*3600)
-	time.Local = cstZone
 
 	gin.SetMode(config.Server.Mode)
 	gin.DefaultWriter = ioutil.Discard
 
 	file, _ := os.Create(config.Server.LogFile + "/http.log")
-
 	log.SetPrefix("[GIN-REST] ")
 	log.SetOutput(file)
 }
