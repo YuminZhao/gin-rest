@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"gin-rest/config"
 	"gin-rest/rest/r"
 
 	"github.com/gin-gonic/gin"
@@ -12,17 +11,21 @@ type controller struct {
 }
 
 type Person struct {
-	Age  int    `form:"age" binding:"required,gt=10"`
-	Name string `form:"name" binding:"required"`
+	Ager float64 `form:"ager" label:"年龄r" validate:"required,gte=10,gtfield=Age"`
+	Age  int     `form:"aget" label:"年龄" validate:"required,gte=10"`
+	Name string  `form:"name" label:"姓名" validate:"required,username"`
 }
 
 var IndexController = controller{
 	Index: func(c *gin.Context) {
 		var data Person
-		if err := c.ShouldBind(data); err != nil {
-			r.Forbidden(c)
+		if err := r.Validate(c, &data); err.Err != nil {
+			r.Error(c, 11101, err.Err.Error(), err.Data)
 			return
 		}
-		r.Return(c, config.Mysql)
+		if data.Name == "" {
+			r.Return(c, data)
+		}
+		r.Return(c, data)
 	},
 }

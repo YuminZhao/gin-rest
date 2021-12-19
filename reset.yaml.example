@@ -3,13 +3,12 @@ server:
   mode: release
   log_file: ./log
   zone: 8
+  language: zh
 
 mysql:
-  - name: default
-    conn:
-      user: root
-      pass: 123456
-  - name: account
-    conn:
-      user: root
-      pass: 123
+  host: 127.0.0.1
+  port: 3306
+  user: root
+  pass: pass
+  database: data
+  charset: utf8mb4

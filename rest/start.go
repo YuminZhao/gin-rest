@@ -4,7 +4,7 @@ import (
 	"gin-rest/config"
 	"gin-rest/rest/r"
 	"gin-rest/route"
-	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
@@ -18,12 +18,12 @@ func init() {
 	time.Local = cstZone
 
 	gin.SetMode(config.Server.Mode)
+	gin.DefaultWriter = ioutil.Discard
 
-	logFile, err := os.Create(config.Server.LogFile + "/http_" + ".log")
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	gin.DefaultWriter = io.MultiWriter(logFile)
+	file, _ := os.Create(config.Server.LogFile + "/http.log")
+
+	log.SetPrefix("[GIN-REST] ")
+	log.SetOutput(file)
 }
 
 func Start() {

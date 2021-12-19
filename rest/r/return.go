@@ -87,9 +87,10 @@ func NotFound(c *gin.Context) {
 	})
 }
 
-func Error(c *gin.Context, code int, message string) {
+func Error(c *gin.Context, code int, message string, data interface{}) {
 	c.JSON(http.StatusUnprocessableEntity, D{
 		Code: code,
 		Msg:  message,
+		Data: data,
 	})
 }
