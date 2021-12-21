@@ -6,11 +6,16 @@ import (
 	"gorm.io/gorm"
 )
 
-type User struct {
+type user struct {
 	gorm.Model
-	Name string
+	Name string `gorm:"size:255"`
+}
+
+type User struct {
+	gorm.Model `json:"-"`
+	Name       string `json:"name"`
 }
 
 func init() {
-	m.DB.AutoMigrate(&User{})
+	m.DB.AutoMigrate(&user{})
 }

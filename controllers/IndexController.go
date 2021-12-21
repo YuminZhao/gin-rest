@@ -1,34 +1,57 @@
 package controllers
 
 import (
-	"gin-rest/models"
-	"gin-rest/rest/m"
 	"gin-rest/rest/r"
+	"gin-rest/services"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
-type controller struct {
-	Index func(c *gin.Context)
+type indexController struct {
+	Index  func(c *gin.Context)
+	Create func(c *gin.Context)
+	Show   func(c *gin.Context)
 }
 
-type person struct {
-	Ager int    `form:"ager" label:"年龄r" validate:"required,gte=10,gtfield=Age"`
-	Age  int    `form:"aget" label:"年龄" validate:"required,gte=10"`
+type create struct {
 	Name string `form:"name" label:"姓名" validate:"required,username"`
 }
 
-var IndexController = controller{
+var IndexController = indexController{
 	Index: func(c *gin.Context) {
-		var data person
+		user, err := services.UserService.GetUser()
+		if err != nil {
+			r.Failed(c, 11101, err.Error())
+			return
+		}
+		r.Return(c, user)
+	},
+	Create: func(c *gin.Context) {
+		var data create
 		if err := r.Validate(c, &data); err.Err != nil {
 			r.Error(c, 11101, err.Err.Error(), err.Data)
 			return
 		}
-		var user models.User
-		user.Name = "name"
-		m.DB.Save(&user)
-
-		r.Return(c, data)
+		err := services.UserService.CreateUser(data.Name)
+		if err != nil {
+			r.Failed(c, 11102, err.Error())
+			return
+		}
+		r.Success(c, "添加用户成功")
+	},
+	Show: func(c *gin.Context) {
+		pid := c.Param("id")
+		id, err := strconv.Atoi(pid)
+		if err != nil {
+			r.Failed(c, 11101, "请输入正确的数字")
+			return
+		}
+		user, err := services.UserService.GetUserById(uint(id))
+		if err != nil {
+			r.Failed(c, 11101, err.Error())
+			return
+		}
+		r.Return(c, user)
 	},
 }

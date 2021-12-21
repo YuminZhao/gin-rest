@@ -12,3 +12,6 @@ mysql:
   pass: pass
   database: data
   charset: utf8mb4
+  max_idle_conns: 10
+  max_open_conns: 50
+  conn_max_lifetime: 300
