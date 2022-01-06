@@ -44,7 +44,7 @@ var IndexController = indexController{
 		pid := c.Param("id")
 		id, err := strconv.Atoi(pid)
 		if err != nil {
-			r.Failed(c, 11101, "请输入正确的数字")
+			r.NotFound(c)
 			return
 		}
 		user, err := services.UserService.GetUserById(uint(id))
