@@ -2,6 +2,7 @@ package rest
 
 import (
 	"gin-rest/config"
+	_ "gin-rest/models"
 	"gin-rest/rest/m"
 	"gin-rest/rest/r"
 	"gin-rest/route"
