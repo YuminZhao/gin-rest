@@ -24,6 +24,10 @@ type orderList struct {
 	}
 }
 
+type OrderCreate struct {
+	Price uint `form:"price" label:"价格" validate:"required"`
+}
+
 func (s *OrderService) GetOrder() ([]orderList, error) {
 	var order []orderList
 	err := m.DB.Table("orders").Preload("User", func(db *gorm.DB) *gorm.DB {

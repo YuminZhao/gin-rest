@@ -21,7 +21,8 @@ type userList struct {
 }
 
 type UserCreate struct {
-	Name string `form:"name" label:"姓名" validate:"required,username"`
+	Name     string `form:"name" label:"姓名" validate:"required,username" message:"usercreate_name"`
+	UserName string `form:"username" label:"用户名" validate:"required,username"`
 }
 
 func (s *UserService) GetUserById(id uint) (models.User, error) {

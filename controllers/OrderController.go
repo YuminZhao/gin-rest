@@ -12,10 +12,6 @@ type orderController struct {
 	Create func(c *gin.Context)
 }
 
-type createOrder struct {
-	Price uint `form:"price" label:"价格" validate:"required"`
-}
-
 var OrderController = orderController{
 	Index: func(c *gin.Context) {
 		var s services.OrderService
@@ -27,7 +23,7 @@ var OrderController = orderController{
 		r.Return(c, user)
 	},
 	Create: func(c *gin.Context) {
-		var data createOrder
+		var data services.OrderCreate
 		if err := r.Validate(c, &data); err.Err != nil {
 			r.Error(c, 11103, err.Err.Error(), err.Data)
 			return

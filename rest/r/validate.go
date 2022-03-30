@@ -55,14 +55,21 @@ func Validate(c *gin.Context, params interface{}) errorType {
 		for _, e := range errs {
 			tran = e.Translate(translator)
 			for i := 0; i < s.NumField(); i++ {
-				t := s.Field(i).Tag
-				l := t.Get("label")
-				tran = strings.Replace(tran, s.Field(i).Name, l, -1)
-			}
-			for i := 0; i < s.NumField(); i++ {
-				t := s.Field(i).Tag
-				f := t.Get("form")
 				if s.Field(i).Name == e.StructField() {
+					t := s.Field(i).Tag
+					l := t.Get("label")
+					f := t.Get("form")
+					m := t.Get("message")
+					if m != "" {
+						messages, oks := validate.Message[m]
+						if oks {
+							message, ok := messages[e.Tag()]
+							if ok {
+								tran = message
+							}
+						}
+					}
+					tran = strings.Replace(tran, s.Field(i).Name, l, -1)
 					errData[f] = tran
 				}
 			}
