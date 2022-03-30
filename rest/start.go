@@ -2,6 +2,7 @@ package rest
 
 import (
 	"gin-rest/config"
+	"gin-rest/controllers/middleware"
 	_ "gin-rest/models"
 	"gin-rest/rest/m"
 	"gin-rest/rest/r"
@@ -31,6 +32,7 @@ func Start() {
 	App.NoRoute(func(c *gin.Context) {
 		r.NotFound(c)
 	})
+	App.Use(middleware.Cors())
 	route.ApiRoute(App)
 
 	err := App.Run(":" + strconv.Itoa(config.Server.Port))

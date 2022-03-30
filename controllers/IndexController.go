@@ -14,13 +14,10 @@ type indexController struct {
 	Show   func(c *gin.Context)
 }
 
-type create struct {
-	Name string `form:"name" label:"姓名" validate:"required,username"`
-}
-
 var IndexController = indexController{
 	Index: func(c *gin.Context) {
-		user, err := services.UserService.GetUser()
+		var s services.UserService
+		user, err := s.GetUser()
 		if err != nil {
 			r.Failed(c, 11101, err.Error())
 			return
@@ -28,12 +25,13 @@ var IndexController = indexController{
 		r.Return(c, user)
 	},
 	Create: func(c *gin.Context) {
-		var data create
+		var data services.UserCreate
 		if err := r.Validate(c, &data); err.Err != nil {
 			r.Error(c, 11101, err.Err.Error(), err.Data)
 			return
 		}
-		err := services.UserService.CreateUser(data.Name)
+		var s services.UserService
+		err := s.CreateUser(data.Name)
 		if err != nil {
 			r.Failed(c, 11102, err.Error())
 			return
@@ -47,7 +45,8 @@ var IndexController = indexController{
 			r.NotFound(c)
 			return
 		}
-		user, err := services.UserService.GetUserById(uint(id))
+		var s services.UserService
+		user, err := s.GetUserById(uint(id))
 		if err != nil {
 			r.Failed(c, 11101, err.Error())
 			return

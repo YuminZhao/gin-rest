@@ -18,7 +18,8 @@ type createOrder struct {
 
 var OrderController = orderController{
 	Index: func(c *gin.Context) {
-		user, err := services.OrderService.GetOrder()
+		var s services.OrderService
+		user, err := s.GetOrder()
 		if err != nil {
 			r.Failed(c, 11101, err.Error())
 			return
@@ -31,7 +32,8 @@ var OrderController = orderController{
 			r.Error(c, 11103, err.Err.Error(), err.Data)
 			return
 		}
-		err := services.OrderService.CreateOrder(data.Price)
+		var s services.OrderService
+		err := s.CreateOrder(data.Price)
 		if err != nil {
 			r.Failed(c, 11104, err.Error())
 			return
